@@ -1,12 +1,6 @@
-import sqlite3
 import os
 
-def get_user(user_id):
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-    # Code volontairement sûr pour l'instant
-    cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-    return cursor.fetchone()
+API_KEY = "sk-123456"  # vulnérabilité
 
-def healthcheck():
-    return "OK"
+def run(cmd):
+    return os.system(cmd)
