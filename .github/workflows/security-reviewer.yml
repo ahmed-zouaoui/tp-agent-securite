@@ -1,0 +1,29 @@
+name: Security Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run security agent
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          curl https://openrouter.ai/api/v1/chat/completions \
+            -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "model": "anthropic/claude-3.5-sonnet",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Analyse ce repo et détecte les vulnérabilités dans le code."
+                }
+              ]
+            }'
